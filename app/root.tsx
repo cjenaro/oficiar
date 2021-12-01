@@ -1,12 +1,5 @@
-import type { LinksFunction, LoaderFunction } from "remix";
-import {
-  Meta,
-  Links,
-  Scripts,
-  useLoaderData,
-  LiveReload,
-  useCatch
-} from "remix";
+import type { LinksFunction } from "remix";
+import { Meta, Links, Scripts, LiveReload, useCatch } from "remix";
 import { Outlet } from "react-router-dom";
 
 import stylesUrl from "./styles/global.css";
@@ -15,13 +8,9 @@ export let links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: stylesUrl }];
 };
 
-export let loader: LoaderFunction = async () => {
-  return { date: new Date() };
-};
-
 function Document({
   children,
-  title
+  title,
 }: {
   children: React.ReactNode;
   title?: string;
@@ -45,13 +34,20 @@ function Document({
 }
 
 export default function App() {
-  let data = useLoaderData();
-
   return (
     <Document>
       <Outlet />
       <footer>
-        <p>This page was rendered at {data.date.toLocaleString()}</p>
+        <p>
+          Con amor por{" "}
+          <a
+            href="https://twitter.com/jenaroc"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            @jenaroc
+          </a>
+        </p>
       </footer>
     </Document>
   );
@@ -83,12 +79,14 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
   return (
     <Document title="Uh-oh!">
-      <h1>App Error</h1>
-      <pre>{error.message}</pre>
-      <p>
-        Replace this UI with what you want users to see when your app throws
-        uncaught errors.
-      </p>
+      <div className="error">
+        <h1>App Error</h1>
+        <pre>{error.message}</pre>
+        <p>
+          Replace this UI with what you want users to see when your app throws
+          uncaught errors.
+        </p>
+      </div>
     </Document>
   );
 }

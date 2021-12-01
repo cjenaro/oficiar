@@ -2,12 +2,34 @@
   outline: none;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: sans-serif;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr 100px;
+  margin: 0;
+  color: #fafafa;
+  background-color: #464545;
 }
 
 footer {
   text-align: center;
   color: #ccc;
-  padding-top: 80px;
+  background-color: #222;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: currentColor;
 }

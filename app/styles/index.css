@@ -1,5 +1,68 @@
-/* 
- * when the user visits this page, this style will apply, when they leave, it
- * will get unloaded, so don't worry so much about conflicting styles between
- * pages!
- */
+.contact {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  border-radius: 10px;
+  background-color: #333;
+  padding: 20px;
+}
+
+h4 {
+  grid-column: -1/1;
+  margin: 0;
+  font-size: 2em;
+}
+
+.rating {
+  grid-row: 2;
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 65px;
+}
+
+.number {
+  grid-row: 2;
+  align-self: center;
+}
+
+.trade {
+  grid-row: 2;
+  align-self: center;
+}
+
+.description {
+  grid-column: -1/1;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.add {
+  margin-left: auto;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 5px;
+  background-color: #333;
+  display: block;
+  width: max-content;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-size: 0.9em;
+}
+
+svg {
+  width: 25px;
+  height: 25px;
+}
