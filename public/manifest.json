@@ -1,0 +1,35 @@
+{
+    "name": "Oficiar",
+    "short_name": "Oficiar",
+    "icons": [
+      {
+        "src": "favicon/apple-touch-icon-144x144.png",
+        "sizes": "144x144",
+        "type": "image/png"
+      },
+      {
+        "src": "favicon/mstile-70x70.png",
+        "sizes": "70x70",
+        "type": "image/png"
+      },
+      {
+        "src": "favicon/mstile-150x150.png",
+        "sizes": "150x150",
+        "type": "image/png"
+      },
+      {
+        "src": "favicon/mstile-310x150.png",
+        "sizes": "310x150",
+        "type": "image/png"
+      },
+      {
+        "src": "favicon/mstile-310x310.png",
+        "sizes": "310x310",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#464545",
+    "theme_color": "#ffffff"
+  }
