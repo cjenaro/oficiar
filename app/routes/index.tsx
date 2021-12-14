@@ -122,7 +122,7 @@ export default function Index() {
           </svg>
         </button>
       </form>
-      <a href="/">Limpiar búsqueda</a>
+      <a href="/" className="clear">Limpiar búsqueda</a>
       <h2>Contactos:</h2>
       <div className="list">
         {data.map((contact) => (

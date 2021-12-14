@@ -35,6 +35,21 @@ form {
   border: 1px solid transparent;
 }
 
+.clear {
+  color: #ccc;
+  border: 1px solid currentColor;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  padding: 0.35rem;
+  display: block;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
+.clear:hover {
+  color: #fafafa;
+}
+
 form:focus-within {
   border-color: #222;
 }
