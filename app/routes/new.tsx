@@ -1,11 +1,5 @@
-import { prisma } from "~/db";
-import {
-  MetaFunction,
-  LinksFunction,
-  ActionFunction,
-  redirect,
-  Form,
-} from "remix";
+import { db } from "~/db";
+import { MetaFunction, LinksFunction, ActionFunction, redirect } from "remix";
 
 import stylesUrl from "../styles/new.css";
 
@@ -18,7 +12,7 @@ export let meta: MetaFunction = () => {
 
 export let action: ActionFunction = async ({ request }) => {
   const body = Object.fromEntries(new URLSearchParams(await request.text()));
-  await prisma.trader.create({
+  await db.trader.create({
     data: {
       ...body,
       rating: Number.isNaN(Number(body.rating)) ? 0 : Number(body.rating),

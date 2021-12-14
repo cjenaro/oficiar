@@ -22,6 +22,42 @@ h4 {
   max-width: 65px;
 }
 
+form,
+input {
+  width: 100%;
+  margin: 1rem 0;
+}
+
+form {
+  display: flex;
+  background-color: #fafafa;
+  border-radius: 0.25rem;
+  border: 1px solid transparent;
+}
+
+form:focus-within {
+  border-color: #222;
+}
+
+form input {
+  border: 0;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0.25rem;
+  flex-grow: 1;
+  background-color: transparent;
+}
+
+form input:focus {
+  outline: none;
+}
+
+form button {
+  background-color: transparent;
+  padding: 0.25rem;
+  border: 0;
+}
+
 .number {
   grid-row: 2;
   align-self: center;

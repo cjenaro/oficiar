@@ -1,9 +1,9 @@
-import type { MetaFunction, LinksFunction, LoaderFunction } from "remix";
+import { MetaFunction, LinksFunction, LoaderFunction } from "remix";
 import { useLoaderData } from "remix";
 import { Link } from "react-router-dom";
 
 import stylesUrl from "../styles/index.css";
-import { prisma } from "~/db";
+import { db } from "~/db";
 import { Trader } from "@prisma/client";
 
 export let meta: MetaFunction = () => {
@@ -17,12 +17,34 @@ export let links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: stylesUrl }];
 };
 
-export let loader: LoaderFunction = async () => {
-  const traders = prisma.trader.findMany();
-  return traders
+export let loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
+  const search = url.searchParams.get("search") || "";
+  const traders = db.trader.findMany({
+    where: {
+      name: {
+        contains: search,
+        mode: "insensitive",
+      },
+    },
+  });
+
+  return traders;
 };
 
 function Contact({ name, rating, description, number, trade }: Trader) {
+  const [first, last = ""] = name?.split(" ") || ["", ""];
+  const content = `
+BEGIN:VCARD
+VERSION:3.0
+N:${first};${last};;;
+FN:${name}
+TITLE:${trade}
+ROLE:${trade}
+TEL;TYPE#WORK,VOICE:${number}
+END:VCARD
+`;
+
   return (
     <div className="contact">
       <h4>{name}</h4>
@@ -44,8 +66,31 @@ function Contact({ name, rating, description, number, trade }: Trader) {
         </svg>
       </p>
       <p className="description">{description}</p>
-      <a className="number" href={`tel:${number}`}>{number}</a>
+      <a className="number" href={`tel:${number}`}>
+        {number}
+      </a>
       <p className="trade">{trade}</p>
+      <a
+        href={`data:text/vcf;charset=utf-8,` + encodeURIComponent(content)}
+        target="_blank"
+        rel="noopener noreferrer"
+        download={name + ".vcf"}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+          />
+        </svg>
+      </a>
     </div>
   );
 }
@@ -58,6 +103,26 @@ export default function Index() {
       <Link to="/new" className="add">
         Agregar contacto
       </Link>
+      <form action="/" method="get">
+        <input type="search" name="search" id="search" />
+        <button type="submit">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </button>
+      </form>
+      <a href="/">Limpiar búsqueda</a>
       <h2>Contactos:</h2>
       <div className="list">
         {data.map((contact) => (
