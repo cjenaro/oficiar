@@ -103,7 +103,7 @@ export default function Index() {
       <Link to="/new" className="add">
         Agregar contacto
       </Link>
-      <a href="https://t.me/oficiar_bot" target="_blank" rel="noopener noreferrer" className="add">
+      <a href="tg://resolve?domain=oficiar_bot" target="_blank" rel="noopener noreferrer" className="add">
         Agregar desde Telegram
       </a>
       <form action="/" method="get">
