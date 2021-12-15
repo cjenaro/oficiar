@@ -32,30 +32,22 @@ export let action: ActionFunction = async ({ request }) => {
   const body = await request.json();
   const id = Number(body.update_id);
   const content = JSON.stringify(body.message);
-  const file_id = body?.message?.document?.file_id;
-  const fileName = body?.message?.document?.file_name;
+  const isContact = !!body?.message?.contact?.phone_number;
 
-  const getFileUrl = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT}/getFile?file_id=${file_id}`;
-
-  const fileResponse = await fetch(getFileUrl).then((blob) => blob.json());
-  const filePath = fileResponse?.result?.file_path;
-
-  if (!!fileResponse?.ok && !!filePath) {
-    const blob = await fetch(
-      `https://api.telegram.org/file/bot${process.env.TELEGRAM_BOT}/${filePath}`
-    ).then((res) => res.blob());
-    const buffer = await blob.text();
-
-    const parts = buffer.split(/\n/);
-    const [, , , , name, title, role, tel] = parts;
+  if (isContact) {
+    const contact = body?.message?.contact;
+    const titleIndex = contact?.vcard.indexOf("TITLE:");
+    const titleStart =
+      titleIndex != -1 ? body?.message?.contact?.vcard.slice(titleIndex + 6) : "";
+    const [title] = titleStart.split(/\n/);
     await db.trader.upsert({
       where: {
-        number: getVcardValue(tel),
+        number: contact.phone_number,
       },
       create: {
-        number: getVcardValue(tel),
-        name: getVcardValue(name),
-        trade: getVcardValue(title) || getVcardValue(role),
+        number: contact.phone_number,
+        name: contact.first_name + " " + contact.last_name,
+        trade: title,
       },
       update: {},
     });
