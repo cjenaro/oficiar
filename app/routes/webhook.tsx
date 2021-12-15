@@ -25,15 +25,17 @@ export let loader: LoaderFunction = async () => {
 };
 
 export let action: ActionFunction = async ({ request }) => {
-  const body = Object.fromEntries(new URLSearchParams(await request.text()));
-  const id = Number(body.update_id);
+  const json = await request.json();
+  const id = Number(json.update_id);
 
   await db.telegramLog.upsert({
     where: { id },
-    update: {},
+    update: {
+      content: JSON.stringify(json.message),
+    },
     create: {
       id,
-      content: JSON.stringify(body.message),
+      content: JSON.stringify(json.message),
     },
   });
   return redirect("/");
@@ -45,8 +47,8 @@ export default function Hook() {
     <div className="container">
       {data?.length ? (
         <ul>
-          {data.map((item: { content: string }) => (
-            <li>
+          {data.map((item: { id: number; content: string }) => (
+            <li key={item.id}>
               <pre>{JSON.stringify(JSON.parse(item.content), null, 2)}</pre>
             </li>
           ))}
