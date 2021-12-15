@@ -103,6 +103,9 @@ export default function Index() {
       <Link to="/new" className="add">
         Agregar contacto
       </Link>
+      <a href="https://t.me/oficiar_bot" target="_blank" rel="noopener noreferrer" className="add">
+        Agregar desde Telegram
+      </a>
       <form action="/" method="get">
         <input type="search" name="search" id="search" />
         <button type="submit">
@@ -122,7 +125,9 @@ export default function Index() {
           </svg>
         </button>
       </form>
-      <a href="/" className="clear">Limpiar búsqueda</a>
+      <a href="/" className="clear">
+        Limpiar búsqueda
+      </a>
       <h2>Contactos:</h2>
       <div className="list">
         {data.map((contact) => (
