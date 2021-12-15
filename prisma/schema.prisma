@@ -14,7 +14,7 @@ model Trader {
   name        String?
   rating      Int?
   description String?
-  number      String?
+  number      String    @unique
   trade       String?
 }
 
