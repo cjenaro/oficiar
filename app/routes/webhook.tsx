@@ -1,5 +1,28 @@
-import { ActionFunction, redirect } from "remix";
+import {
+  ActionFunction,
+  LinksFunction,
+  LoaderFunction,
+  MetaFunction,
+  redirect,
+  useLoaderData,
+} from "remix";
 import { db } from "~/db";
+import stylesUrl from "../styles/webhook.css";
+
+export let meta: MetaFunction = () => {
+  return {
+    title: "Oficiar | Webhook",
+    description: "Logs del webhook.",
+  };
+};
+
+export let links: LinksFunction = () => {
+  return [{ rel: "stylesheet", href: stylesUrl }];
+};
+
+export let loader: LoaderFunction = async () => {
+  return db.telegramLog.findMany();
+};
 
 export let action: ActionFunction = async ({ request }) => {
   const body = Object.fromEntries(new URLSearchParams(await request.text()));
@@ -17,5 +40,18 @@ export let action: ActionFunction = async ({ request }) => {
 };
 
 export default function Hook() {
-  return <></>;
+  const data = useLoaderData();
+  return (
+    <div className="container">
+      {data?.length ? (
+        <ul>
+          {data.map((item: { content: string }) => (
+            <li>
+              <pre>{JSON.stringify(JSON.parse(item.content), null, 2)}</pre>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  );
 }
