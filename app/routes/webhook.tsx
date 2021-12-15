@@ -1,9 +1,9 @@
 import {
   ActionFunction,
+  json,
   LinksFunction,
   LoaderFunction,
   MetaFunction,
-  redirect,
   useLoaderData,
 } from "remix";
 import { db } from "~/db";
@@ -25,20 +25,26 @@ export let loader: LoaderFunction = async () => {
 };
 
 export let action: ActionFunction = async ({ request }) => {
-  const json = await request.json();
-  const id = Number(json.update_id);
+  const body = await request.json();
+  const id = Number(body.update_id);
+  const content = JSON.stringify(body.message);
 
   await db.telegramLog.upsert({
     where: { id },
     update: {
-      content: JSON.stringify(json.message),
+      content,
     },
     create: {
       id,
-      content: JSON.stringify(json.message),
+      content,
     },
   });
-  return redirect("/");
+  return json(
+    {},
+    {
+      status: 200,
+    }
+  );
 };
 
 export default function Hook() {
